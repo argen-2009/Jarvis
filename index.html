@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Jarvis AI</title>
+    <style>
+        body {
+            background: black;
+            color: cyan;
+            font-family: Arial;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: cyan;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🤖 JARVIS</h1>
+    <p id="status">Click to start</p>
+    <button onclick="startJarvis()">Start</button>
+
+    <script>
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = "en-US";
+        recognition.continuous = true;
+        recognition.interimResults = false;
+
+        function speak(text, lang = "en-US") {
+            const speech = new SpeechSynthesisUtterance(text);
+            speech.lang = lang;
+            speechSynthesis.speak(speech);
+        }
+
+        function startJarvis() {
+            recognition.start();
+            document.getElementById("status").innerText = "Listening...";
+        }
+
+        recognition.onresult = function (event) {
+            let command = event.results[event.results.length - 1][0].transcript.toLowerCase();
+            document.getElementById("status").innerText = command;
+
+            // 🌐 English commands
+            if (command.includes("hello")) {
+                speak("Hello boss");
+
+            } else if (command.includes("open youtube")) {
+                window.open("https://youtube.com");
+                speak("Yes sir");
+
+            } else if (command.includes("open project")) {
+                window.open("https://argen-2009.github.io/Events/");
+                speak("Yes sir");
+
+            } else if (command.includes("open google")) {
+                window.open("https://google.com");
+                speak("Yes sir");
+
+            } else if (command.includes("open music")) {
+                window.open("https://youtu.be/lUlXiXGle90");
+                speak("Playing music");
+
+            } else if (command.includes("time")) {
+                let time = new Date().toLocaleTimeString();
+                speak("Current time is " + time);
+
+            } else if (command.includes("who are you")) {
+                speak("I am your personal Jarvis assistant created by Argen");
+
+            // 🇰🇬 Kyrgyz commands
+            } else if (command.includes("салам")) {
+                speak("Салам кожоюн", "ky-KG");
+
+            } else if (command.includes("саат")) {
+                let time = new Date().toLocaleTimeString();
+                speak("Азыркы убакыт " + time, "ky-KG");
+
+            } else if (command.includes("ютуб ач")) {
+                window.open("https://youtube.com");
+                speak("YouTube ачылды", "ky-KG");
+
+            } else if (command.includes("күн")) {
+                let date = new Date().toLocaleDateString();
+                speak("Бүгүнкү күн " + date, "ky-KG");
+
+            // 🔎 Search system
+            } else if (command.includes("search")) {
+                let searchQuery = command.replace("search", "").trim();
+                window.open("https://www.google.com/search?q=" + searchQuery);
+                speak("Searching for " + searchQuery);
+
+            // 🛑 Stop
+            } else if (command.includes("stop")) {
+                speak("Goodbye boss");
+                recognition.stop();
+
+            } else {
+                speak("Sorry, I don't understand / Түшүнгөн жокмун");
+            }
+        };
+
+        recognition.onerror = function (event) {
+            console.log("Error:", event.error);
+        };
+
+    </script>
+
+</body>
+
+</html>
